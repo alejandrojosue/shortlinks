@@ -5,6 +5,7 @@ const { emailExist, userIdExist } = require('../helpers/db-validators')
 
 const {
   usersGet,
+  userGetById,
   usersPut,
   usersPost,
   usersDelete,
@@ -176,23 +177,29 @@ const router = Router()
 
 router.get('/', usersGet)
 
+router.get('/:id', [
+  check('id', 'id is not valid').isMongoId(),
+  validateFields
+],
+userGetById)
+
 router.put('/:id', [
-  check('id', 'No es un ID válido').isMongoId(),
+  check('id', 'id is not valid').isMongoId(),
   check('id').custom(userIdExist),
   validateFields
 ],
 usersPut)
 
 router.post('/', [
-  check('nombre', 'El nombre es requerido').not().isEmpty(),
-  check('clave', 'La clave debe tener al menos 6 letras').isLength({ min: 6 }),
-  check('correo', 'El correo no es válido').isEmail(),
-  check('correo').custom(emailExist),
+  check('name', 'name is required').not().isEmpty(),
+  check('pass', 'The password must be at least 6 letters').isLength({ min: 6 }),
+  check('email', 'email is not valid').isEmail(),
+  check('email').custom(emailExist),
   validateFields
 ], usersPost)
 
 router.delete('/:id', [
-  check('id', 'No es un ID válido').isMongoId(),
+  check('id', 'ID is not valid').isMongoId(),
   check('id').custom(userIdExist),
   validateFields
 ], usersDelete)

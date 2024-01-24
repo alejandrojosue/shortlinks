@@ -1,7 +1,15 @@
+const User = require('../models/user')
 const { response, request } = require('express')
 const bcryptjs = require('bcryptjs')
-const User = require('../models/user')
 const { rest } = require('../config/api')
+
+const userGetById = async (req = request, res = response) => {
+  const { id } = req.params
+  const user = await User.findById(id)
+  if (!user) {
+    res.status(404).json({ msg: 'Not Found' })
+  } else res.json(user)
+}
 
 const usersGet = async (req = request, res = response) => {
   const { defaultLimit, maxLimit } = rest
@@ -22,20 +30,15 @@ const usersGet = async (req = request, res = response) => {
 
 const usersPut = async (req, res = response) => {
   const { id } = req.params
-  const { _id, pass, correo, ..._r } = req.body
-  // Validar contra BD
+  const { _id, pass, email, ..._r } = req.body
   if (pass) {
-    // Encriptar pass
     const salt = bcryptjs.genSaltSync()
     _r.pass = bcryptjs.hashSync(pass, salt)
   }
 
   const user = await User.findByIdAndUpdate(id, _r)
 
-  res.json({
-    // msg: 'Put API - Controlador',
-    user
-  })
+  res.json(user)
 }
 
 const usersPost = async (req, res = response) => {
@@ -44,21 +47,17 @@ const usersPost = async (req, res = response) => {
 
   // Encriptar clave
   const salt = bcryptjs.genSaltSync()
-  user.clave = bcryptjs.hashSync(pass, salt)
+  user.pass = bcryptjs.hashSync(pass, salt)
 
   await user.save()
-  res.json({
-    user
-  })
+  res.json(user)
 }
 
 const usersDelete = async (req, res = response) => {
   const { id } = req.params
 
-  // borrar registro
-  // const user = await User.findByIdAndDelete(id);
-  const user = await User.findByIdAndUpdate(id, { status: false })
-
+  const user = await User.findByIdAndDelete(id)
+  // const user = await User.findByIdAndUpdate(id, { status: false })
   res.json(user)
 }
 
@@ -70,6 +69,7 @@ const usersPatch = (req, res = response) => {
 
 module.exports = {
   usersGet,
+  userGetById,
   usersPut,
   usersPost,
   usersDelete,

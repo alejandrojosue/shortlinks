@@ -20,7 +20,6 @@ const swaggerDocs = (app, port) => {
   app.get('/api/docs.json', (req, res) => {
     res.setHeader('Content-type', 'application/json')
     res.send(openapiSpecification)
-    console.log('PORT: ' + port)
   })
 }
 
