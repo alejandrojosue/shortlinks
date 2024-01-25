@@ -3,3 +3,6 @@
 
 #modules nodejs
 node_modules/
+
+#documentation swagger
+documentation/swagger-documentation.json
