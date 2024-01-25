@@ -3,9 +3,13 @@ const Link = require('../models/link')
 const { rest } = require('../config/api')
 
 const linksGet = async (req = request, res = response) => {
+  // #swagger.tags = ['Links']
+  // #swagger.summary = 'Endpoint to List Links'
+  //  #swagger.parameters['limit'] = { description: 'Maximum amount to obtain.', name: 'limit', required: false }
+  //  #swagger.parameters['from'] = { description: 'Management of paginations, allowing you to start from a specific record.', name: 'from', required: false }
   const { defaultLimit, maxLimit } = rest
   const { limit = defaultLimit, from = 0 } = req.query
-  const [linksCount, links] = await Promise.all([
+  const [count, links] = await Promise.all([
     Link.countDocuments(),
     Link.find()
       .skip(Number(from))
@@ -14,12 +18,15 @@ const linksGet = async (req = request, res = response) => {
   ])
 
   res.json({
-    count: linksCount,
+    count,
     links
   })
 }
 
 const linkGetById = async (req = request, res = response) => {
+  // #swagger.tags = ['Links']
+  // #swagger.summary = 'Endpoint to get a Link'
+  // #swagger.parameters['id'] = { description: 'A valid id mongo link identifier.', name: 'id', required: true }
   const { id } = req.params
   const link = await Link.findById(id)
   if (!link) {
@@ -28,22 +35,26 @@ const linkGetById = async (req = request, res = response) => {
 }
 
 const linksGetByUser = async (req = request, res = response) => {
-  const { defaultLimit, maxLimit, user } = rest
-  const { limit = defaultLimit } = req.query
-  const userId = { userId: user }
-  const [linksCount, links] = await Promise.all([
-    Link.countDocuments(userId),
-    Link.find(userId)
-      .limit(parseInt(limit > maxLimit ? maxLimit : limit))
+  // #swagger.tags = ['Links']
+  // #swagger.summary = 'Endpoint to List Links from a specific user'
+  //  #swagger.parameters['userId'] = { description: 'A valid id mongo user identifier.', name: 'userId', required: true }
+  const { userId } = req.params
+  const [count, links] = await Promise.all([
+    Link.countDocuments({ userId }),
+    Link.find({ userId })
   ])
 
   res.json({
-    count: linksCount,
+    count,
     links
   })
 }
 
 const linksPut = async (req, res = response) => {
+  // #swagger.tags = ['Links']
+  // #swagger.summary = 'Endpoint to update a Link'
+  //  #swagger.parameters['id'] = { description: 'A valid id mongo link identifier.', name: 'id', required: true }
+  // #swagger.responses[409] = { description: 'An title already exists' }
   const { id } = req.params
   // eslint-disable-next-line
   const { _id, userId, created_at, updated_at, ...args } = req.body
@@ -54,6 +65,12 @@ const linksPut = async (req, res = response) => {
 }
 
 const linksPost = async (req, res = response) => {
+  // #swagger.tags = ['Links']
+  // #swagger.summary = 'Endpoint to create a Link'
+  //  #swagger.parameters['title'] = { description: 'A title for link.', name: 'title', required: true }
+  //  #swagger.parameters['url'] = { description: 'An url with correct format, example http://www.facebook.com', name: 'url', required: true }
+  //  #swagger.parameters['userId'] = { description: 'A valid id mongo user identifier.', name: 'userId', required: true }
+  // #swagger.responses[409] = { description: 'An title already exists' }
   const { title, url, userId } = req.body
   const link = new Link({ title, url, userId })
   await link.save()
@@ -61,11 +78,12 @@ const linksPost = async (req, res = response) => {
 }
 
 const linksDelete = async (req, res = response) => {
+  // #swagger.tags = ['Links']
+  // #swagger.summary = 'Endpoint to delete a Link'
+  //  #swagger.parameters['id'] = { description: 'A valid id mongo link identifier.', name: 'id', required: true }
   const { id } = req.params
 
-  // delete data
   const link = await Link.findByIdAndDelete(id)
-
   res.json(link)
 }
 

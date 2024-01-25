@@ -2,14 +2,12 @@ const express = require('express')
 const cors = require('cors')
 const { dbConnect } = require('../config/database')
 const { swaggerDocs: swaggerDocsV1 } = require('../documentation/swagger')
-const notFound = require('../middlewares/not-found')
+// const notFound = require('../middlewares/not-found')
 const errorHandler = require('../middlewares/error-handler')
 class Server {
   constructor () {
     this.app = express()
     this.port = process.env.PORT
-    this.usersPath = '/api/users'
-    this.linksPath = '/api/links'
 
     // Conectar a la base de datos
     this.conectarDB()
@@ -37,16 +35,17 @@ class Server {
   }
 
   routes () {
-    this.app.use(this.usersPath, require('../routes/user'))
-    this.app.use(this.linksPath, require('../routes/link'))
-    this.app.use(notFound)
+    this.app.use('/api/', require('../routes/user'))
+    this.app.use('/api/', require('../routes/link'))
+    // this.app.use(notFound)
     this.app.use(errorHandler)
   }
 
   listen () {
     this.app.listen(this.port, () => {
+      console.clear()
       console.log('server is running in', this.port)
-      swaggerDocsV1(this.app, this.port)
+      swaggerDocsV1(this.app)
     })
   }
 }

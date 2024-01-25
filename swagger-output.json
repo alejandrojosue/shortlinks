@@ -1,0 +1,14 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "ShortLinks",
+    "version": "1.0.0",
+    "description": "The backend for shortiLinks made in Node js"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {}
+}

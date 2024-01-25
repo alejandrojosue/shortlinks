@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node app",
-    "test": "node ./test/test.js"
+    "test": "node ./test/test.js",
+    "swagger": "node ./helpers/swagger-generator.js"
   },
   "author": "Alejandro Díaz",
   "license": "ISC",
   "devDependencies": {
-    "standard": "17.1.0"
+    "standard": "17.1.0",
+    "swagger-autogen": "^2.23.7"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
