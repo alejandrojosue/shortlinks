@@ -1,10 +1,15 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "title": "DOCUMENTATION for the SHORTLINKS website",
     "version": "1.0.0",
     "description": "The backend for shortiLinks made in Node js"
   },
+  "host": "http://localhost:8080",
+  "basePath": "/api",
+  "schemes": [
+    "http://localhost8080/api - Development Server"
+  ],
   "paths": {
     "/links/": {
       "get": {
@@ -19,18 +24,14 @@
             "description": "Maximum amount to obtain.",
             "required": false,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "from",
             "description": "Management of paginations, allowing you to start from a specific record.",
             "required": false,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -51,26 +52,38 @@
             "description": "A title for link.",
             "required": true,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "url",
             "description": "An url with correct format, example http://www.facebook.com",
             "required": true,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "userId",
             "description": "A valid id mongo user identifier.",
             "required": true,
             "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "url": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                }
+              }
             }
           }
         ],
@@ -83,26 +96,6 @@
           },
           "409": {
             "description": "An title already exists"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "example": "any"
-                  },
-                  "url": {
-                    "example": "any"
-                  },
-                  "userId": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -119,9 +112,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            },
+            "type": "string",
             "description": "A valid id mongo link identifier."
           }
         ],
@@ -151,10 +142,32 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            },
+            "type": "string",
             "description": "A valid id mongo link identifier."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                },
+                "created_at": {
+                  "example": "any"
+                },
+                "updated_at": {
+                  "example": "any"
+                },
+                "args": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -166,32 +179,6 @@
           },
           "409": {
             "description": "An title already exists"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "example": "any"
-                  },
-                  "userId": {
-                    "example": "any"
-                  },
-                  "created_at": {
-                    "example": "any"
-                  },
-                  "updated_at": {
-                    "example": "any"
-                  },
-                  "args": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       },
@@ -206,9 +193,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            },
+            "type": "string",
             "description": "A valid id mongo link identifier."
           }
         ],
@@ -237,9 +222,7 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            },
+            "type": "string",
             "description": "A valid id mongo user identifier."
           }
         ],
@@ -269,18 +252,14 @@
             "description": "Maximum amount to obtain.",
             "required": false,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "from",
             "description": "Management of paginations, allowing you to start from a specific record.",
             "required": false,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -301,26 +280,38 @@
             "description": "A name for user.",
             "required": true,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "email",
             "description": "A email with correct format, example joe.doe@gmail.com",
             "required": true,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "pass",
             "description": "A pass with minimun 6 characters",
             "required": true,
             "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "pass": {
+                  "example": "any"
+                }
+              }
             }
           }
         ],
@@ -333,26 +324,6 @@
           },
           "409": {
             "description": "An email already exists"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "pass": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -369,9 +340,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -400,10 +369,29 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            },
+            "type": "string",
             "description": "A valid id mongo link identifier."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "example": "any"
+                },
+                "pass": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "_r": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -415,29 +403,6 @@
           },
           "409": {
             "description": "An title already exists"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "example": "any"
-                  },
-                  "pass": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "_r": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       },
@@ -452,9 +417,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            },
+            "type": "string",
             "description": "A valid id mongo user identifier."
           }
         ],
