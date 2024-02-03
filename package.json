@@ -11,8 +11,10 @@
   "author": "Alejandro Díaz",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^3.0.3",
     "standard": "17.1.0",
-    "swagger-autogen": "^2.23.7"
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
@@ -23,7 +25,7 @@
     "dotenv": "^16.3.2",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
-    "mongoose": "^8.1.0",
-    "swagger-ui-express": "^5.0.0"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.0"
   }
 }

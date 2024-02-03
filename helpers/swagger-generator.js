@@ -6,9 +6,9 @@ const doc = {
     version: '1.0.0',
     description: 'The backend for shortiLinks made in Node js'
   },
-  host: 'http://localhost:' + process.env.PORT,
+  host: null,
   basePath: '/api',
-  schemes: [`http://localhost${process.env.PORT}/api - Development Server`]
+  schemes: ['http', 'https']
 }
 
 const outputFile = '../documentation/swagger-documentation.json'

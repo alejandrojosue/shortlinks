@@ -38,7 +38,17 @@ const linksGetByUser = async (req = request, res = response) => {
   // #swagger.tags = ['Links']
   // #swagger.summary = 'Endpoint to List Links from a specific user'
   //  #swagger.parameters['userId'] = { description: 'A valid id mongo user identifier.', name: 'userId', required: true }
+  /* #swagger.security = [{
+            "X-API-Key": []
+    }] */
   const { userId } = req.params
+  const userAuthenticated = req.userAuthenticated
+  if (userId !== userAuthenticated._id + '') {
+    return res.status(403).json({
+      msg: 'Forbidden'
+    })
+  }
+
   const [count, links] = await Promise.all([
     Link.countDocuments({ userId }),
     Link.find({ userId })
@@ -67,9 +77,6 @@ const linksPut = async (req, res = response) => {
 const linksPost = async (req, res = response) => {
   // #swagger.tags = ['Links']
   // #swagger.summary = 'Endpoint to create a Link'
-  //  #swagger.parameters['title'] = { description: 'A title for link.', name: 'title', required: true }
-  //  #swagger.parameters['url'] = { description: 'An url with correct format, example http://www.facebook.com', name: 'url', required: true }
-  //  #swagger.parameters['userId'] = { description: 'A valid id mongo user identifier.', name: 'userId', required: true }
   // #swagger.responses[409] = { description: 'An title already exists' }
   const { title, url, userId } = req.body
   const link = new Link({ title, url, userId })
@@ -79,8 +86,8 @@ const linksPost = async (req, res = response) => {
 
 const linksDelete = async (req, res = response) => {
   // #swagger.tags = ['Links']
-  // #swagger.summary = 'Endpoint to delete a Link'
   //  #swagger.parameters['id'] = { description: 'A valid id mongo link identifier.', name: 'id', required: true }
+  // #swagger.summary = 'Endpoint to delete a Link'
   const { id } = req.params
 
   const link = await Link.findByIdAndDelete(id)

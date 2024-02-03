@@ -5,12 +5,52 @@
     "version": "1.0.0",
     "description": "The backend for shortiLinks made in Node js"
   },
-  "host": "http://localhost:8080",
   "basePath": "/api",
   "schemes": [
-    "http://localhost8080/api - Development Server"
+    "http",
+    "https"
   ],
   "paths": {
+    "/auth/login/": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Sign In User",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "pass": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/links/": {
       "get": {
         "tags": [
@@ -47,27 +87,6 @@
         "summary": "Endpoint to create a Link",
         "description": "",
         "parameters": [
-          {
-            "name": "title",
-            "description": "A title for link.",
-            "required": true,
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "url",
-            "description": "An url with correct format, example http://www.facebook.com",
-            "required": true,
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "description": "A valid id mongo user identifier.",
-            "required": true,
-            "in": "query",
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
@@ -224,6 +243,11 @@
             "required": true,
             "type": "string",
             "description": "A valid id mongo user identifier."
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -232,6 +256,49 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ]
+      }
+    },
+    "/{title}": {
+      "get": {
+        "tags": [
+          "ShortLink"
+        ],
+        "summary": "Endpoint get URL by title",
+        "description": "Get shortened link title to return full url",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Title of shortlink."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A title exists"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "A title not exists"
           },
           "409": {
             "description": "Conflict"
@@ -276,27 +343,6 @@
         "description": "",
         "parameters": [
           {
-            "name": "name",
-            "description": "A name for user.",
-            "required": true,
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "email",
-            "description": "A email with correct format, example joe.doe@gmail.com",
-            "required": true,
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "pass",
-            "description": "A pass with minimun 6 characters",
-            "required": true,
-            "in": "query",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "schema": {
@@ -340,7 +386,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "A valid id mongo user identifier."
           }
         ],
         "responses": {
@@ -402,7 +449,7 @@
             "description": "Bad Request"
           },
           "409": {
-            "description": "An title already exists"
+            "description": "A title already exists"
           }
         }
       },
@@ -419,6 +466,11 @@
             "required": true,
             "type": "string",
             "description": "A valid id mongo user identifier."
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -428,10 +480,21 @@
           "400": {
             "description": "Bad Request"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "409": {
             "description": "Conflict"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     }
   }

@@ -2,8 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const { dbConnect } = require('../config/database')
 const { swaggerDocs: swaggerDocsV1 } = require('../documentation/swagger')
-// const notFound = require('../middlewares/not-found')
-const errorHandler = require('../middlewares/error-handler')
+// const notFound = require('../helpers/not-found')
+const errorHandler = require('../helpers/error-handler')
 class Server {
   constructor () {
     this.app = express()
@@ -35,8 +35,10 @@ class Server {
   }
 
   routes () {
+    this.app.use('/api/', require('../routes/auth'))
     this.app.use('/api/', require('../routes/user'))
     this.app.use('/api/', require('../routes/link'))
+    this.app.use('/', require('../routes/shortLink'))
     // this.app.use(notFound)
     this.app.use(errorHandler)
   }

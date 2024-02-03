@@ -35,12 +35,13 @@ const titleValidate = async (title) => {
   }
 }
 
-const urlValidate = async (url) => {
+const urlValidate = async (url = '') => {
+  let value = ''
   try {
     // eslint-disable-next-line
-    new URL(url)
+    value = new URL(url + '')
   } catch (error) {
-    throw new Error('url not valid')
+    throw new Error('url not valid' + value)
   }
 }
 

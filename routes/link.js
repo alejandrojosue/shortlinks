@@ -11,6 +11,7 @@ const {
   linksDelete,
   linksGetByUser
 } = require('../controllers/links')
+const { validateJWT } = require('../middlewares/validate-jwt')
 
 const router = Router()
 
@@ -22,6 +23,7 @@ router.get('/links/:id', [
 ], linkGetById)
 
 router.get('/links/user/:userId', [
+  validateJWT,
   check('userId', 'id is not valid').isMongoId(),
   validateFields
 ], linksGetByUser)
@@ -41,7 +43,6 @@ router.post('/links/', [
 router.put('/links/:id', [
   check('id', 'id is not valid').isMongoId(),
   check('id').custom(linkIdExist),
-  check('userId').custom(userIdExist),
   check('title').custom(titleValidate),
   check('title').custom(titleExist),
   check('url').custom(urlValidate),

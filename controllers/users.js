@@ -6,6 +6,8 @@ const { rest } = require('../config/api')
 const userGetById = async (req = request, res = response) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Get By Id User'
+  //  #swagger.parameters['id'] = { description: 'A valid id mongo user identifier.', name: 'id', required: true }
+
   const { id } = req.params
   const user = await User.findById(id)
   if (!user) {
@@ -38,7 +40,7 @@ const usersPut = async (req, res = response) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Endpoint to update a User'
   //  #swagger.parameters['id'] = { description: 'A valid id mongo link identifier.', name: 'id', required: true }
-  // #swagger.responses[409] = { description: 'An title already exists' }
+  // #swagger.responses[409] = { description: 'A title already exists' }
   const { id } = req.params
   const { _id, pass, email, ..._r } = req.body
   if (pass) {
@@ -54,9 +56,6 @@ const usersPut = async (req, res = response) => {
 const usersPost = async (req, res = response) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Endpoint to create a User'
-  //  #swagger.parameters['name'] = { description: 'A name for user.', name: 'name', required: true }
-  //  #swagger.parameters['email'] = { description: 'A email with correct format, example joe.doe@gmail.com', name: 'email', required: true }
-  //  #swagger.parameters['pass'] = { description: 'A pass with minimun 6 characters', name: 'pass', required: true }
   // #swagger.responses[409] = { description: 'An email already exists' }
   const { name, email, pass } = req.body
   const user = new User({ name, email, pass })
@@ -69,15 +68,23 @@ const usersPost = async (req, res = response) => {
   res.json(user)
 }
 
-const usersDelete = async (req, res = response) => {
+const usersDelete = async (req = request, res = response) => {
   // #swagger.tags = ['Users']
   // #swagger.summary = 'Endpoint to delete a User'
   //  #swagger.parameters['id'] = { description: 'A valid id mongo user identifier.', name: 'id', required: true }
+  /* #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
   const { id } = req.params
+  const userAuthenticated = req.userAuthenticated
+  if (id !== userAuthenticated._id + '') {
+    return res.status(403).json({
+      msg: 'Forbidden'
+    })
+  }
 
-  const user = await User.findByIdAndDelete(id)
-  // const user = await User.findByIdAndUpdate(id, { status: false })
-  res.json(user)
+  const user = await User.findByIdAndUpdate(id, { status: false })
+  res.json({ user, userAuthenticated })
 }
 
 const usersPatch = (req, res = response) => {
